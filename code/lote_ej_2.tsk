@@ -1,0 +1,6 @@
+TaskCPU 100
+@2:
+TaskCon 5 0 8
+@3:
+TaskCon 5 10 100
+

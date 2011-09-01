@@ -1,4 +1,6 @@
 #include "tasks.h"
+#include <cstdlib>
+#include <time.h>
 
 using namespace std;
 
@@ -18,6 +20,18 @@ void TaskAlterno(vector<int> params) { // params: ms_cpu, ms_io, ms_cpu, ...
 	}
 }
 
+void TaskCon(vector<int> params){
+  int n    = (int) params[0];
+  int bmin = (int) params[1];
+  int bmax = (int) params[2];
+  int random;
+  srand(time(NULL));
+
+  for(int i = 0; i < n; i++){
+    random = rand() % (bmax-bmin) + bmin;
+    uso_IO(random);
+  }
+}
 
 
 void tasks_init(void) {
@@ -27,4 +41,5 @@ void tasks_init(void) {
 	register_task(TaskCPU, 1);
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
+	register_task(TaskCon, 3);
 }
