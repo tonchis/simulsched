@@ -6,13 +6,16 @@
 #include "basesched.h"
 
 class SchedRR : public SchedBase {
-	public:
-		SchedRR(std::vector<int> argn);
-		virtual void load(int pid);
-		virtual void unblock(int pid);
-		virtual int tick(const enum Motivo m);
-	
-	private:
+  public:
+    SchedRR(std::vector<int> argn);
+    virtual void load(int pid);
+    virtual void unblock(int pid);
+    virtual int tick(const enum Motivo m);
+
+  private:
+    std::queue<int> round;
+    int current_quantum;
+    int quantum;
 };
 
 #endif
