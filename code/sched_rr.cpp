@@ -32,7 +32,13 @@ int SchedRR::tick(const enum Motivo m) {
         round.pop();
       }
       break;
-    default:
+    case BLOCK:
+      next_pid = round.front();
+      round.pop();
+      round.push(current_pid());
+      current_quantum = 0;
+      break;
+    case TICK:
       if(current_quantum == quantum - 1){
         next_pid = round.front();
         round.pop();
@@ -41,7 +47,8 @@ int SchedRR::tick(const enum Motivo m) {
       }else{
         next_pid = current_pid();
       }
-      return next_pid;
+      break;
+    default:
       break;
   }
 
