@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <cstdio>
 #include "basesched.h"
 
 class SchedRR : public SchedBase {
