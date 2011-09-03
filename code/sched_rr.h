@@ -14,6 +14,8 @@ class SchedRR : public SchedBase {
     virtual int tick(const enum Motivo m);
 
   private:
+    int nextPid();
+  
     std::queue<int> round;
     int current_quantum;
     int quantum;

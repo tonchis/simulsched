@@ -25,30 +25,32 @@ int SchedRR::tick(const enum Motivo m) {
   switch(m){
     case EXIT:
       current_quantum = 0;
+      round.pop();
       if (round.empty()){
         next_pid = IDLE_TASK;
       }else{
         next_pid = round.front();
-        round.pop();
       }
       break;
     case BLOCK:
-      next_pid = round.front();
-      round.pop();
-      round.push(current_pid());
-      current_quantum = 0;
+      next_pid = nextPid();
       break;
     case TICK:
       printf("current: %d\n", current_quantum);
       printf("quantum: %d\n", quantum);
-      if(current_quantum == quantum){
-        next_pid = round.front();
-        round.pop();
-        if(current_pid() != IDLE_TASK)
-          round.push(current_pid());
-        current_quantum = 0;
+      if(current_pid() != IDLE_TASK){
+        if(current_quantum == quantum){
+          next_pid = nextPid();
+        }else{
+          next_pid = current_pid();
+        }
       }else{
-        next_pid = current_pid();
+        if(round.empty()){
+          next_pid = IDLE_TASK;
+        }else{
+          next_pid = round.front();
+          current_quantum = 0;
+        }
       }
       break;
     default:
@@ -56,5 +58,13 @@ int SchedRR::tick(const enum Motivo m) {
   }
 
   return next_pid;
+}
+
+int SchedRR::nextPid(){
+  int old = round.front();
+  round.pop();
+  round.push(old);
+  current_quantum = 0;
+  return round.front();
 }
 
