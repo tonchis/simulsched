@@ -15,7 +15,7 @@ class SchedRR : public SchedBase {
 
   private:
     int nextPid();
-  
+
     std::queue<int> round;
     int current_quantum;
     int quantum;

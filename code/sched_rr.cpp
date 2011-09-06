@@ -36,8 +36,6 @@ int SchedRR::tick(const enum Motivo m) {
       next_pid = nextPid();
       break;
     case TICK:
-      printf("current: %d\n", current_quantum);
-      printf("quantum: %d\n", quantum);
       if(current_pid() != IDLE_TASK){
         if(current_quantum == quantum){
           next_pid = nextPid();
