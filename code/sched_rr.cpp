@@ -15,7 +15,7 @@ void SchedRR::load(int pid) {
 }
 
 void SchedRR::unblock(int pid) {
-  // te felicito.
+  round.push(pid);
 }
 
 int SchedRR::tick(const enum Motivo m) {
@@ -24,6 +24,7 @@ int SchedRR::tick(const enum Motivo m) {
 
   switch(m){
     case EXIT:
+    case BLOCK:
       current_quantum = 0;
       round.pop();
       if (round.empty()){
@@ -31,9 +32,6 @@ int SchedRR::tick(const enum Motivo m) {
       }else{
         next_pid = round.front();
       }
-      break;
-    case BLOCK:
-      next_pid = nextPid();
       break;
     case TICK:
       if(current_pid() != IDLE_TASK){
