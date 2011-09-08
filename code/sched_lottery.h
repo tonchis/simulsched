@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <map>
 #include "basesched.h"
 
 struct task {
@@ -20,7 +21,8 @@ class SchedLottery : public SchedBase {
   private:
     int seed;
     int quantum;
-    std::vector<task> tasks;
+    int current_quantum;
+    std::map<int,double> tasks;
 };
 
 #endif
