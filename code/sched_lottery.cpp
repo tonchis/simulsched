@@ -30,6 +30,8 @@ void SchedLottery::unblock(int pid) {
 int SchedLottery::tick(const enum Motivo m) {
   int next_pid;
   int compensation_tickets;
+  double compensation_fraction;
+  int remaining_quantum;
   struct task* current_task;
   current_quantum++;
 
@@ -48,15 +50,18 @@ int SchedLottery::tick(const enum Motivo m) {
       }
       break;
     case BLOCK:
-      //printf("cq: %d\n", current_quantum);
-      //printf("q: %d\n", quantum);
-      //printf("division: %f\n", (double) quantum/current_quantum);
-      //printf("ceil: %f\n", ceil((double) quantum/current_quantum));
-      //printf("ceil: %d\n", (int) ceil((double) quantum/current_quantum));
-      compensation_tickets = (int) ceil((double) quantum/current_quantum);
+      remaining_quantum = quantum - current_quantum;
+      if(remaining_quantum > 0){
+        compensation_fraction = (double) (quantum/remaining_quantum);
+        compensation_tickets = (int) ceil(compensation_fraction);
+      }else{
+        compensation_tickets = 0;
+      }
+
       tasks[current_pid()]->blocked = true;
       total_tickets -= tasks[current_pid()]->tickets;
       tasks[current_pid()]->tickets += compensation_tickets;
+
       if(total_tickets <= 0){
         next_pid = IDLE_TASK;
       }else{
