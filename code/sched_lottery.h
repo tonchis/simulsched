@@ -7,8 +7,8 @@
 #include "basesched.h"
 
 struct task {
-  int pid;
-  double tickets;
+  int tickets;
+  bool   blocked;
 };
 
 class SchedLottery : public SchedBase {
@@ -19,10 +19,13 @@ class SchedLottery : public SchedBase {
     virtual int tick(const enum Motivo m);
 
   private:
-    int seed;
     int quantum;
     int current_quantum;
-    std::map<int,double> tasks;
+    int total_tickets;
+    std::map<int,struct task*> tasks;
+
+    int raffle();
 };
 
 #endif
+

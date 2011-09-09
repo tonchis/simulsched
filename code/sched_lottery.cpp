@@ -1,57 +1,80 @@
 #include "sched_lottery.h"
 #include "basesched.h"
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <cmath>
 
 using namespace std;
 
 SchedLottery::SchedLottery(vector<int> argn) {
-  seed            = argn[0];
+  srand((unsigned int) argn[0]);
   quantum         = argn[1];
+  total_tickets   = 0;
   current_quantum = 0;
 }
 
 void SchedLottery::load(int pid) {
-  tasks.insert(pair<int, double>(pid, (double) 10));
+  struct task* new_task = new struct task;
+  new_task->tickets = 1;
+  new_task->blocked = false;
+  tasks[pid] = new_task;
+  total_tickets += new_task->tickets;
 }
 
 void SchedLottery::unblock(int pid) {
+  tasks[pid]->blocked = false;
+  total_tickets += tasks[pid]->tickets;
 }
 
 int SchedLottery::tick(const enum Motivo m) {
   int next_pid;
+  int compensation_tickets;
+  struct task* current_task;
   current_quantum++;
 
   switch(m){
     case EXIT:
       current_quantum = 0;
-      // remove current from tasks
+      current_task = tasks[current_pid()];
+      tasks.erase(current_pid());
+      total_tickets -= current_task->tickets;
+      delete current_task;
 
-      if (tasks.empty()){
+      if (total_tickets <= 0){
         next_pid = IDLE_TASK;
       }else{
-        // hold a lottery and chose the winner!
-        // next_pid = winner.pid;
+        next_pid = raffle();
       }
       break;
     case BLOCK:
-      // remove from tasks??
-      tasks[current_pid()] += (double) quantum/current_quantum;
-      // hold a lottery and chose the winner!
-      // next_pid = winner.pid;
+      //printf("cq: %d\n", current_quantum);
+      //printf("q: %d\n", quantum);
+      //printf("division: %f\n", (double) quantum/current_quantum);
+      //printf("ceil: %f\n", ceil((double) quantum/current_quantum));
+      //printf("ceil: %d\n", (int) ceil((double) quantum/current_quantum));
+      compensation_tickets = (int) ceil((double) quantum/current_quantum);
+      tasks[current_pid()]->blocked = true;
+      total_tickets -= tasks[current_pid()]->tickets;
+      tasks[current_pid()]->tickets += compensation_tickets;
+      if(total_tickets <= 0){
+        next_pid = IDLE_TASK;
+      }else{
+        next_pid = raffle();
+      }
       break;
     case TICK:
       if(current_pid() != IDLE_TASK){
         if(current_quantum == quantum){
-          // hold a lottery and chose the winner!
-          // next_pid = winner.pid;
+          next_pid = raffle();
         }else{
           next_pid = current_pid();
         }
       }else{
-        if(tasks.empty()){
+        if(total_tickets <= 0){
           next_pid = IDLE_TASK;
         }else{
-          // hold a lottery and chose the winner!
-          // next_pid = winner.pid;
+          next_pid = raffle();
         }
       }
       break;
@@ -62,3 +85,21 @@ int SchedLottery::tick(const enum Motivo m) {
   return next_pid;
 }
 
+// http://www.wordreference.com/es/translation.asp?tranword=raffle
+int SchedLottery::raffle(){
+  int random  = rand() % total_tickets + 1;
+  int acum = 0;
+
+  std::map<int,struct task*>::iterator it;
+  for(it = tasks.begin(); it != tasks.end(); it++){
+    if(!it->second->blocked){
+      acum += it->second->tickets;
+      if(acum >= random)
+        return it->first;
+    }
+  }
+
+  perror("No hubo ganador");
+  exit(1);
+  return -1;
+}
