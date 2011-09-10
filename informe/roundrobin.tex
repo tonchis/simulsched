@@ -1,1 +1,16 @@
 \section{Round Robin scheduling}
+
+\begin{quote}
+	\textit{Round robin es un método para seleccionar todos los elementos en un grupo de manera equitativa y en un orden racional, normalmente comenzando por el primer elemento de la lista hasta llegar al último y empezando de nuevo desde el primer elemento.} 
+	
+	\textit{El nombre del algoritmo viene del principio de Round-Roubin conocido de otros campos, donde cada persona toma una parte de un algo compartido en cantidades parejas.}\footnote{Fuente: Wikipedia: La enciclopedia libre.}
+	
+\end{quote}
+
+	El concepto del algoritmo se basa en un intervalo de tiempo llamado \textit{quantum}, el cual varía. Los procesos se ordenan en una cola cuya organización es FIFO y el \textit{scheduler} la recorre asignándole un \textit{quantum} de tiempo a cada uno.
+
+\subsection{Implementación propuesta}
+
+Se define un intervalo de tiempo denominado cuanto, cuya duración varía según el sistema. La cola de procesos se estructura como una cola circular. El planiﬁcador la recorre asignando un cuanto de tiempo a cada proceso. La organización de la cola es FIFO. El cuanto se suele implantar mediante un temporizador que genera una interrupción cuando se agota el cuanto de tiempo. Si el proceso agota su ráfaga de CPU antes de ﬁnalizar el cuanto, el planiﬁcador asigna la CPU inmediatamente a otro proceso. Este algoritmo tiene un tiempo de espera relativamente grande. Sin embargo, garantiza un reparto de la CPU entre todos los usuarios y arroja tiempos de respuesta buenos.
+
+Nuestra implementación del scheduler contiene tres métodos: \textit{load(pid), unblock(pid) y tick(motivo) y .}
