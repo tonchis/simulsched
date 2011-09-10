@@ -35,7 +35,7 @@ void TaskCon(vector<int> params){
 }
 
 void TaskBatch(vector<int> params){
-  int tot = params[0];
+  int tot = params[0] - 1;
   int blocks = params[1];
   int rest;
   int random;
