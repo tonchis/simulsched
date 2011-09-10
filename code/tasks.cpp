@@ -33,6 +33,29 @@ void TaskCon(vector<int> params){
   }
 }
 
+void TaskBatch(vector<int> params){
+  int tot = params[0];
+  int blocks = params[1];
+  int rest;
+  int random;
+
+  srand(time(NULL));
+
+  for(int i = 0; i < tot; i++){
+    rest = tot - i;
+    if(blocks == 0){
+      uso_CPU(rest);
+      break;
+    }
+    random = rand() % 100 + 1;
+    if(random <= (int) ceil((double)(100 * blocks / rest))){
+      blocks--;
+      uso_IO(1);
+    }else{
+      uso_CPU(1);
+    }
+  }
+}
 
 void tasks_init(void) {
 	/* Todos los tipos de tareas se deben registrar acá para poder ser usadas.
@@ -42,4 +65,5 @@ void tasks_init(void) {
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
 	register_task(TaskCon, 3);
+	register_task(TaskBatch, 2);
 }
