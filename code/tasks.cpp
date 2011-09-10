@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <cmath>
+#include <stdio.h>
 
 using namespace std;
 
@@ -39,6 +40,11 @@ void TaskBatch(vector<int> params){
   int blocks = params[1];
   int rest;
   int random;
+
+  if(blocks >= tot){
+    perror("TaskBatch: blocks debe ser menor a tot.");
+    exit(1);
+  }
 
   srand(time(NULL));
 
