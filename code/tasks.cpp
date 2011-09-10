@@ -1,6 +1,7 @@
 #include "tasks.h"
 #include <cstdlib>
 #include <time.h>
+#include <cmath>
 
 using namespace std;
 
