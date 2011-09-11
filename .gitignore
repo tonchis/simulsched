@@ -5,3 +5,6 @@ informe/*.toc
 informe/*.aux
 informe/*.pdf
 informe/*.out
+informe/*.bbl
+informe/*.blg
+informe/*.synctex.gz
