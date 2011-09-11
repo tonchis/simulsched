@@ -37,17 +37,12 @@ int SchedLottery::tick(const enum Motivo m) {
 
   switch(m){
     case EXIT:
-      current_quantum = 0;
       current_task = tasks[current_pid()];
       tasks.erase(current_pid());
       total_tickets -= current_task->tickets;
       delete current_task;
 
-      if (total_tickets <= 0){
-        next_pid = IDLE_TASK;
-      }else{
-        next_pid = raffle();
-      }
+      next_pid = nextPid();
       break;
     case BLOCK:
       remaining_quantum = quantum - current_quantum;
@@ -62,27 +57,17 @@ int SchedLottery::tick(const enum Motivo m) {
       total_tickets -= tasks[current_pid()]->tickets;
       tasks[current_pid()]->tickets += compensation_tickets;
 
-      if(total_tickets <= 0){
-        next_pid = IDLE_TASK;
-      }else{
-        next_pid = raffle();
-      }
+      next_pid = nextPid();
       break;
     case TICK:
       if(current_pid() != IDLE_TASK){
         if(current_quantum == quantum){
-          current_quantum = 0;
-          next_pid = raffle();
+          next_pid = nextPid();
         }else{
           next_pid = current_pid();
         }
       }else{
-        if(total_tickets <= 0){
-          next_pid = IDLE_TASK;
-        }else{
-          current_quantum = 0;
-          next_pid = raffle();
-        }
+        next_pid = nextPid();
       }
       break;
     default:
@@ -92,21 +77,25 @@ int SchedLottery::tick(const enum Motivo m) {
   return next_pid;
 }
 
-// http://www.wordreference.com/es/translation.asp?tranword=raffle
-int SchedLottery::raffle(){
-  int random  = rand() % total_tickets + 1;
-  int acum = 0;
+int SchedLottery::nextPid(){
+  current_quantum = 0;
+  if(total_tickets <= 0){
+    return IDLE_TASK;
+  }else{
+    int random  = rand() % total_tickets + 1;
+    int acum = 0;
 
-  std::map<int,struct task*>::iterator it;
-  for(it = tasks.begin(); it != tasks.end(); it++){
-    if(!it->second->blocked){
-      acum += it->second->tickets;
-      if(acum >= random)
-        return it->first;
+    std::map<int,struct task*>::iterator it;
+    for(it = tasks.begin(); it != tasks.end(); it++){
+      if(!it->second->blocked){
+        acum += it->second->tickets;
+        if(acum >= random)
+          return it->first;
+      }
     }
-  }
 
-  perror("No hubo ganador");
-  exit(1);
-  return -1;
+    perror("No hubo ganador");
+    exit(1);
+    return -1;
+  }
 }

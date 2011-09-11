@@ -1,6 +1,7 @@
 # Quantum 10
 TaskIO 10 80
 *3 TaskCPU 60
+@10:
 *2 TaskAlterno 10 20 10 20 10
 TaskBatch 40 5
 @30:

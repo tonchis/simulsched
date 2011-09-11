@@ -24,7 +24,7 @@ class SchedLottery : public SchedBase {
     int total_tickets;
     std::map<int,struct task*> tasks;
 
-    int raffle();
+    int nextPid();
 };
 
 #endif
