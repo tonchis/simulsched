@@ -71,6 +71,7 @@ int SchedLottery::tick(const enum Motivo m) {
     case TICK:
       if(current_pid() != IDLE_TASK){
         if(current_quantum == quantum){
+          current_quantum = 0;
           next_pid = raffle();
         }else{
           next_pid = current_pid();
@@ -79,6 +80,7 @@ int SchedLottery::tick(const enum Motivo m) {
         if(total_tickets <= 0){
           next_pid = IDLE_TASK;
         }else{
+          current_quantum = 0;
           next_pid = raffle();
         }
       }
