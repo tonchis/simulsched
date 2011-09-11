@@ -1,2 +1,7 @@
 code/*.o
 code/simusched
+informe/*.log
+informe/*.toc
+informe/*.aux
+informe/*.pdf
+informe/*.out
