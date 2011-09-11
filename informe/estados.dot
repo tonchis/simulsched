@@ -1,0 +1,14 @@
+digraph roundrobin
+{
+  {rank = same; "Inicio";}
+  {rank = same; "Listo"; "Bloqueado";}
+  {rank = same; "Corriendo";}
+  {rank = same; "Fin";}
+
+  "Inicio" -> "Listo";
+  "Listo" -> "Corriendo";
+  "Corriendo" -> "Fin";
+  "Corriendo" -> "Bloqueado";
+  "Corriendo" -> "Listo";
+  "Bloqueado" -> "Listo";
+}
