@@ -41,7 +41,7 @@ void TaskBatch(vector<int> params){
   int rest;
   int random;
 
-  if(blocks >= tot){
+  if(blocks > tot){
     perror("TaskBatch: blocks debe ser menor a tot.");
     exit(1);
   }
