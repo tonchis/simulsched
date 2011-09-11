@@ -89,8 +89,10 @@ int SchedLottery::nextPid(){
     for(it = tasks.begin(); it != tasks.end(); it++){
       if(!it->second->blocked){
         acum += it->second->tickets;
-        if(acum >= random)
+        if(acum >= random){
+          it->second->tickets = 1;
           return it->first;
+        }
       }
     }
 
