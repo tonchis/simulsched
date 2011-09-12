@@ -34,24 +34,28 @@ Nuestra implementación del scheduler contiene tres métodos: \textit{load(pid),
 
 \end{itemize}
 
-\subsection{Gráfico de estados}
+\subsection{Diagrama de estados}
 
 \begin{center}
 \includegraphics[scale=0.5]{estados.png}
 \end{center}
  
-En este gráfico de estados podemos apreciar el desalojo de tareas así como 
+En este diagrama de estados podemos apreciar el desalojo de tareas así como 
 
 \subsection{Análisis del algoritmo}
 
-Al realizar varias pruebas pudimos comprobar que a medida que aumentamos el \textit{quantum} haciéndolo proporcional al total de \textit{ticks} de las tareas, el tiempo necesario para que todas finalicen disminuye.
-Esto es lo que podemos apreciar en los gráficos siguientes: las tareas duran todas 10 \textit{ticks} y la cantidad de \textit{blocks} aumenta de 0 a 9.
+Al realizar varias pruebas pudimos comprobar que a medida que aumentamos el \textit{quantum} haciéndolo proporcional al total de \textit{ticks} de las tareas, el tiempo necesario para que todas finalicen disminuye. Además podemos ver que el \textit{throughput} también mejora: a medida que el \textit{quantum} aumenta la proporción de tareas finalizadas por intervalo es crece.
+
+Esto es lo que podemos apreciar en los gráficos siguientes: las tareas, de tipo \verb|TaskBatch|, duran 10 \textit{ticks} y la cantidad de \textit{blocks} aumenta de 0 a 9. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{./graficos/out_batch_fijo1.png}
 \caption{Algoritmo Round robin con \textit{quantum} 1}
 \end{figure}  
+
+Como podemos apreciar este caso las tareas tardan alrededor de 200 \textit{ticks} de reloj en terminar. En cuanto al \textit{throughput} podemos ver que es bastante malo ya que todas las tareas terminan en un mismo intervalo, el último. 
+
  
 \begin{figure}[H]
 \centering
@@ -59,4 +63,7 @@ Esto es lo que podemos apreciar en los gráficos siguientes: las tareas duran to
 \caption{Algoritmo Round robin con \textit{quantum} 9} 
 \end{figure}
 
-Como podemos apreciar en el primer caso las tareas tardan alrededor de 200 \textit{ticks} de reloj en terminar y en el segundo, alrededor de 160. 
+
+En este caso las tareas tardan alrededor de 160 \textit{ticks} de reloj en terminar y con respecto al \textit{throughput} vemos que mejora notablemente ya que la cantidad de tareas que finalizan por intervalo es mas uniforme. 
+
+
