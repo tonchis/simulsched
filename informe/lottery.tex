@@ -1,8 +1,11 @@
 \section{Lottery scheduling}
 Lottery scheduling es un algoritmo de planificaci\'on probabilistico para los procesos de un sistema operativo. A cada proceso se les asigna un n\'umero de billetes de loter\'ia, y se elije un boleto al azar para seleccionar el siguiente proceso. La distribución de los billetes no tiene por qu\'e ser uniforme, darle más billetes a un proceso le ofrece una oportunidad mayor de salir seleccionado.
+
 \subsection{Implementaci\'on propuesta}
 A la hora de implementar este algoritmo, recurrimos al paper de Waldspurger y Weihl, \textit{Lottery scheduling: Flexible proportional - share resource management} el cual explica los detalles del algoritmo. 
 
 En dicho paper, adem\'as del sistema de tickets se propone un sistema de monedas o \textit{currencies} las cuales respaldan los tickets. El sistema cuenta con una moneda base que respalda una serie de tickets repartidos entre los usuarios que lanzan los procesos. A su vez, cada usuario emite una moneda para respaldar los tickets que reciben sus procesos. Lo mismo sucede con los procesos y sus \textit{threads}. Como en el simulador provisto por la c\'atedra no existen los usuarios ni los \textit{threads}, implementamos \'unicamente el sistema de tickets base.
 
-Cuando un nuevo proceso se inicia, este recibe un ticket para el pr\'oximo sorteo.
+Cuando un nuevo proceso se inicia, este recibe un ticket para el pr\'oximo sorteo. Como todas las tareas reciben un ticket, todas tienen la misma probabilidad de ser elegidas.
+
+Por otro lado, cuando un proceso consume una porci\'on \textit{f} de su \textit{quantum} y luego se bloquea, este es desalojado del procesador y compensado con $\frac{quantum}{quantum - f}$ cantidad de tickets para el pr\'oximo sorteo. 
