@@ -6,6 +6,16 @@ A la hora de implementar este algoritmo, recurrimos al paper de Waldspurger y We
 
 En dicho paper, adem\'as del sistema de tickets se propone un sistema de monedas o \textit{currencies} las cuales respaldan los tickets. El sistema cuenta con una moneda base que respalda una serie de tickets repartidos entre los usuarios que lanzan los procesos. A su vez, cada usuario emite una moneda para respaldar los tickets que reciben sus procesos. Lo mismo sucede con los procesos y sus \textit{threads}. Como en el simulador provisto por la c\'atedra no existen los usuarios ni los \textit{threads}, implementamos \'unicamente el sistema de tickets base.
 
-Cuando un nuevo proceso se inicia, este recibe un ticket para el pr\'oximo sorteo. Como todas las tareas reciben un ticket, todas tienen la misma probabilidad de ser elegidas.
+A continuaci\'on explicaremos los pasos de nuestra implementacion que utiliza los mismos m\'etodos que la vista para Round Robin.
 
-Por otro lado, cuando un proceso consume una porci\'on \textit{f} de su \textit{quantum} y luego se bloquea, este es desalojado del procesador y compensado con $\frac{quantum}{quantum - f}$ cantidad de tickets para el pr\'oximo sorteo. 
+\begin{itemize}
+	\item El método \textit{load(pid)} se agrega a nuestro diccionario de tareas el nuevo \textit{pid} y se le da un ticket.
+	\item El método \textit{unblock(pid)} se la desmarca como bloqueada.
+	\item El método \textit{tick(motivo)} se ejecuta por cada tick del reloj de la máquina el simulador. El parámetro \textbf{motivo} indica lo que ocurrió con la tarea que ocupaba el CPU el ciclo de reloj anterior:
+	
+	\begin{itemize}
+		\item Si el \textbf{motivo} es \textit{exit}: se saca la tarea de nuestro diccionario y se hace un nuevo sorteo.
+		\item Si el \textbf{motivo} es \textit{block}: se la demarca como bloqueada y se la compensa con $\frac{quantum}{quantum - f}$ donde \textit{f} es la fracci\'on de \textit{quantum} que utiliz\'o.
+		\item Si el \textbf{motivo} es \textit{tick}: si se termina el \textit{quantum} de esa tarea, se la desaloja y se realiza un sorteo. La nueva tarea elegida es puesta a trabajar y se le deja un solo ticket. Si no hay m\'as tareas o est\'an todas bloqueadas, trabaja la \verb|idle_task|.
+	\end{itemize}
+\end{itemize}
