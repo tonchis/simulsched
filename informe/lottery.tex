@@ -27,10 +27,7 @@ A continuación explicaremos los pasos de nuestra implementación que utiliza lo
 \caption{El diagrama de estados es similar al del Round Robin.}
 \end{figure}
 
-<<<<<<< HEAD
 \subsection{Análisis del algoritmo}
-=======
-\subsection{An\'alisis del algoritmo}
 Para probar el algoritmo, le pasamos el siguiente lote:
 \begin{verbatim}
 	# lote_ej_8.tsk
@@ -45,14 +42,15 @@ Para probar el algoritmo, le pasamos el siguiente lote:
 	TaskBatch 40 5
 \end{verbatim}
 
->>>>>>> Agrego nuevo grafico y explicacion del lote 8 variado.
+Con este lote lo que podemos observar es que las tareas que se bloquean (la 0, 4, 5, 6 y 8), no pasan mucho tiempo esperando el procesador, ya que son compensadas. Sin embargo, si miramos las tareas 1, 2 ó 7, vemos que pueden pasar varios turnos sin ocupar el procesador, ya tienen un solo ticket para el sorteo.
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{./graficos/out_ej_8.png}
 \caption{\emph{Lottery} - \emph{Quantum} 10, Semilla 1315772865, Lote con bloqueos.}
 \end{figure} 
 
-Con este lote lo que podemos observar es que las tareas que se bloquean (la 4, 5, 6 y 8), no pasan mucho tiempo esperando el procesador, ya que son compensadas. Sin embargo, si miramos las tareas 1, 2 ó 7, vemos que pueden pasar varios turnos sin ocupar el procesador, ya tienen un solo ticket para el sorteo.
+Las dos pruebas siguientes están hechas sobre el mismo lote, pero con diferente semilla y están para comprobar la naturaleza aleatoria del algoritmo.
 
 \begin{figure}[H]
 \centering
@@ -63,6 +61,6 @@ Con este lote lo que podemos observar es que las tareas que se bloquean (la 4, 5
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{./graficos/out_ej_8_3.png}
-\caption{\emph{Lottery} - \emph{Quantum} 10, Semilla 1315793579, Lote sin bloqueos 2.}
+\caption{\emph{Lottery} - \emph{Quantum} 10, Semilla 1315793579, Lote sin bloqueos.}
 \end{figure} 
 
