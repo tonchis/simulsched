@@ -1,0 +1,16 @@
+\section{Conclusión}
+
+Para la realización de este trabajo se nos pidió que implementáramos dos algoritmos de \textit{scheduling} así también como varios tipos de tareas.
+Luego de hacerlo podemos decir que en general hay muchas variables a tener en cuenta y mejorar pero, a veces, estas se contradicen y no es posible mejorar algunas sin empeorar otras.
+
+En el algoritmo de \textit{Round Robin scheduling} logramos evitar el problema de inanición mediante la asignación de un \textit{quantum} pero todas las tareas son consideradas iguales. Si el \textit{quantum} es muy largo, puede parecer que el sistema no responde. Esto se puede reflejar, por ejemplo, en que si estoy utilizando el juego ``Buscaminas'' y el reproductor de música, podría escuchar el sonido entrecortado.
+
+Si el \textit{quantum} es muy corto, éste es consumido en su mayor parte por \textit{scheduling} y cambios de contexto, lo cual el sistema pasa gran parte de su tiempo sin hacer trabajo de verdad.
+
+En el algoritmo de \textit{Lottery scheduling} se trata de solucionar los inconvenientes anteriormente mencionados mediante la asignación de prioridades a las tareas, sin embargo, dado que la cantidad de tickets que se utiliza para seleccionar la siguiente tarea a procesar proviene de un número aleatorio, puede suceder que alguna tarea permanezca sin procesar por mucho tiempo.
+
+Vale destacar que este algoritmo, al igual que \textit{Round robin} también soluciona el problema de inanición.
+
+Finalmente no podemos decir que alguno de los dos algoritmos de \textit{scheduling} implementados sea mejor que el otro. Todo depende del contexto en el que se esté.
+
+ 
